@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Register & Login</title>
+  <style>
+    body { font-family: Arial; background: #f4f4f4; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .form-container { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px #ccc; width: 300px; }
+    h2 { text-align: center; }
+    input, button { width: 100%; padding: 10px; margin: 8px 0; }
+    button { background: #007bff; color: white; border: none; }
+    .hidden { display: none; }
+    #message { text-align: center; color: green; }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <div id="registerForm">
+      <h2>Register</h2>
+      <input type="text" id="regUsername" placeholder="Username" />
+      <input type="password" id="regPassword" placeholder="Password" />
+      <input type="password" id="regConfirm" placeholder="Verify Password" />
+      <input type="email" id="regEmail" placeholder="Email" />
+      <button onclick="register()">Register</button>
+    </div>
+
+    <div id="loginForm" class="hidden">
+      <h2>Login</h2>
+      <input type="text" id="loginUsername" placeholder="Username" />
+      <input type="password" id="loginPassword" placeholder="Password" />
+      <input type="password" id="loginConfirm" placeholder="Verify Password" />
+      <button onclick="login()">Login</button>
+    </div>
+
+    <p id="message"></p>
+  </div>
+
+  <script>
+    const scriptURL = "https://script.google.com/macros/s/AKfycbw79CiGD8xE42lGMkuhmZMlmVz7ujfkLDD_FwWFhUbjtU6f3OGz2XrCXHF2AtSEynmKVQ/exec";
+
+    function register() {
+      const username = document.getElementById("regUsername").value.trim();
+      const password = document.getElementById("regPassword").value;
+      const confirm = document.getElementById("regConfirm").value;
+      const email = document.getElementById("regEmail").value.trim();
+
+      if (!username || !password || !confirm || !email) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      if (password !== confirm) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "register",
+          username: username,
+          password: password,
+          email: email
+        }),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.text())
+      .then(res => {
+        if (res === "success") {
+          document.getElementById("registerForm").classList.add("hidden");
+          document.getElementById("loginForm").classList.remove("hidden");
+          document.getElementById("message").textContent = "Registration successful! Please log in.";
+        } else {
+          alert("Registration failed.");
+        }
+      });
+    }
+
+    function login() {
+      const username = document.getElementById("loginUsername").value.trim();
+      const password = document.getElementById("loginPassword").value;
+      const confirm = document.getElementById("loginConfirm").value;
+
+      if (!username || !password || !confirm) {
+        alert("Please fill in all fields.");
+        return;
+      }
+
+      if (password !== confirm) {
+        alert("Passwords do not match.");
+        return;
+      }
+
+      fetch(scriptURL, {
+        method: "POST",
+        body: JSON.stringify({
+          action: "login",
+          username: username,
+          password: password
+        }),
+        headers: { "Content-Type": "application/json" }
+      })
+      .then(res => res.text())
+      .then(res => {
+        if (res === "success") {
+          document.getElementById("message").textContent = "Login successful!";
+        } else {
+          alert("Invalid credentials.");
+        }
+      });
+    }
+  </script>
+</body>
+</html>
