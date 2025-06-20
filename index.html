@@ -1,124 +1,88 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Register/Login</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
-    .container {
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
-      width: 300px;
-    }
-    h2 {
-      text-align: center;
-    }
-    input {
-      width: 100%;
-      padding: 10px;
-      margin: 6px 0;
-    }
-    button {
-      width: 100%;
-      padding: 10px;
-      background: #3498db;
-      color: white;
-      border: none;
-      margin-top: 10px;
-      cursor: pointer;
-    }
-    #loginForm {
-      display: none;
-    }
-    .message {
-      color: green;
-      font-size: 14px;
-      text-align: center;
-    }
+    body { font-family: Arial; background: #eee; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .container { background: white; padding: 20px; border-radius: 8px; width: 300px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+    input, button { width: 100%; padding: 10px; margin: 5px 0; }
+    button { background: #3498db; color: white; border: none; }
+    .message { color: green; text-align: center; font-size: 14px; }
+    #loginForm { display: none; }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Registration Form -->
     <form id="registerForm">
       <h2>Register</h2>
-      <input type="text" id="regUsername" placeholder="Username" required>
-      <input type="email" id="regEmail" placeholder="Email" required>
-      <input type="password" id="regPassword" placeholder="Password" required>
-      <input type="password" id="regConfirmPassword" placeholder="Verify Password" required>
+      <input type="text" id="regUsername" placeholder="Username" required />
+      <input type="email" id="regEmail" placeholder="Email" required />
+      <input type="password" id="regPassword" placeholder="Password" required />
+      <input type="password" id="regConfirmPassword" placeholder="Verify Password" required />
       <button type="submit">Register</button>
       <div id="registerMessage" class="message"></div>
     </form>
 
-    <!-- Login Form -->
     <form id="loginForm">
       <h2>Login</h2>
-      <input type="text" id="loginUsername" placeholder="Username" required>
-      <input type="password" id="loginPassword" placeholder="Password" required>
-      <input type="password" id="loginConfirmPassword" placeholder="Verify Password" required>
+      <input type="text" id="loginUsername" placeholder="Username" required />
+      <input type="password" id="loginPassword" placeholder="Password" required />
+      <input type="password" id="loginConfirmPassword" placeholder="Verify Password" required />
       <button type="submit">Login</button>
       <div id="loginMessage" class="message"></div>
     </form>
   </div>
 
   <script>
-    const registerForm = document.getElementById('registerForm');
-    const loginForm = document.getElementById('loginForm');
-    const registerMessage = document.getElementById('registerMessage');
-    const loginMessage = document.getElementById('loginMessage');
+    window.onload = function() {
+      const registerForm = document.getElementById('registerForm');
+      const loginForm = document.getElementById('loginForm');
+      const registerMessage = document.getElementById('registerMessage');
+      const loginMessage = document.getElementById('loginMessage');
+      let savedUser = {};
 
-    let savedUser = {};
+      registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const username = document.getElementById('regUsername').value.trim();
+        const email = document.getElementById('regEmail').value.trim();
+        const password = document.getElementById('regPassword').value;
+        const confirmPassword = document.getElementById('regConfirmPassword').value;
 
-    registerForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const username = document.getElementById('regUsername').value.trim();
-      const email = document.getElementById('regEmail').value.trim();
-      const password = document.getElementById('regPassword').value;
-      const confirmPassword = document.getElementById('regConfirmPassword').value;
+        if (password !== confirmPassword) {
+          registerMessage.textContent = "Passwords do not match!";
+          return;
+        }
 
-      if (password !== confirmPassword) {
-        registerMessage.textContent = "Passwords do not match!";
-        return;
-      }
+        savedUser = { username, password };
+        registerMessage.textContent = "Registered successfully!";
+        setTimeout(() => {
+          registerForm.style.display = 'none';
+          loginForm.style.display = 'block';
+        }, 1000);
+      });
 
-      savedUser = { username, password }; // save in memory
-      registerMessage.textContent = "Registered successfully!";
-      
-      setTimeout(() => {
-        registerForm.style.display = 'none';
-        loginForm.style.display = 'block';
-      }, 1000);
-    });
+      loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        const loginUsername = document.getElementById('loginUsername').value.trim();
+        const loginPassword = document.getElementById('loginPassword').value;
+        const loginConfirmPassword = document.getElementById('loginConfirmPassword').value;
 
-    loginForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const loginUsername = document.getElementById('loginUsername').value.trim();
-      const loginPassword = document.getElementById('loginPassword').value;
-      const loginConfirmPassword = document.getElementById('loginConfirmPassword').value;
+        if (loginPassword !== loginConfirmPassword) {
+          loginMessage.textContent = "Passwords do not match!";
+          return;
+        }
 
-      if (loginPassword !== loginConfirmPassword) {
-        loginMessage.textContent = "Passwords do not match!";
-        return;
-      }
-
-      if (
-        loginUsername === savedUser.username &&
-        loginPassword === savedUser.password
-      ) {
-        loginMessage.textContent = "Login successful!";
-      } else {
-        loginMessage.textContent = "Invalid credentials!";
-      }
-    });
+        if (
+          loginUsername === savedUser.username &&
+          loginPassword === savedUser.password
+        ) {
+          loginMessage.textContent = "Login successful!";
+        } else {
+          loginMessage.textContent = "Invalid credentials!";
+        }
+      });
+    };
   </script>
 </body>
 </html>
