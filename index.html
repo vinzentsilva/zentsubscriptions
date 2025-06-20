@@ -2,117 +2,93 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Login & Registration</title>
+  <title>Register</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: #f0f0f0;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
     }
-    .container {
-      width: 350px;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    .form-box {
+      background: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 360px;
     }
     h2 {
       text-align: center;
+      margin-bottom: 20px;
     }
     input {
       width: 100%;
-      padding: 10px;
-      margin: 8px 0;
+      padding: 12px;
+      margin: 10px 0;
       border: 1px solid #ccc;
-      border-radius: 5px;
+      border-radius: 8px;
     }
     button {
       width: 100%;
-      padding: 10px;
-      background: #28a745;
-      color: #fff;
+      padding: 12px;
+      background: #007bff;
+      color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
     }
     button:hover {
-      background: #218838;
-    }
-    .switch-link {
-      text-align: center;
-      margin-top: 10px;
-    }
-    .switch-link a {
-      color: #007bff;
-      cursor: pointer;
-      text-decoration: none;
-    }
-    .hidden {
-      display: none;
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Registration Form -->
+  <div class="form-box">
+    <h2>Register</h2>
     <form id="registerForm">
-      <h2>Register</h2>
-      <input type="text" placeholder="Username" required>
-      <input type="password" id="regPass" placeholder="Password" required>
-      <input type="password" id="regConfirmPass" placeholder="Verify Password" required>
-      <input type="email" placeholder="Email" required>
+      <input type="text" id="username" placeholder="Username" required>
+      <input type="password" id="password" placeholder="Password" required>
+      <input type="password" id="confirm" placeholder="Verify Password" required>
+      <input type="email" id="email" placeholder="Email" required>
       <button type="submit">Register</button>
-      <div class="switch-link">
-        Already have an account? <a onclick="toggleForms()">Login here</a>
-      </div>
-    </form>
-
-    <!-- Login Form -->
-    <form id="loginForm" class="hidden">
-      <h2>Login</h2>
-      <input type="text" placeholder="Username" required>
-      <input type="password" id="loginPass" placeholder="Password" required>
-      <input type="password" id="loginConfirmPass" placeholder="Verify Password" required>
-      <button type="submit">Login</button>
-      <div class="switch-link">
-        Don't have an account? <a onclick="toggleForms()">Register here</a>
-      </div>
     </form>
   </div>
 
   <script>
-    const registerForm = document.getElementById('registerForm');
-    const loginForm = document.getElementById('loginForm');
-
-    function toggleForms() {
-      registerForm.classList.toggle('hidden');
-      loginForm.classList.toggle('hidden');
-    }
-
-    registerForm.addEventListener('submit', function(e) {
+    const form = document.getElementById('registerForm');
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
-      const pass = document.getElementById('regPass').value;
-      const confirm = document.getElementById('regConfirmPass').value;
-      if (pass !== confirm) {
-        alert('Passwords do not match!');
+
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const confirm = document.getElementById('confirm').value;
+      const email = document.getElementById('email').value.trim();
+
+      if (password !== confirm) {
+        alert("Passwords do not match!");
         return;
       }
-      alert('Registered successfully (form submission placeholder)');
-    });
 
-    loginForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const pass = document.getElementById('loginPass').value;
-      const confirm = document.getElementById('loginConfirmPass').value;
-      if (pass !== confirm) {
-        alert('Passwords do not match!');
-        return;
+      const scriptURL = "YOUR_SCRIPT_URL_HERE"; // Replace this!
+
+      const response = await fetch(scriptURL, {
+        method: 'POST',
+        body: JSON.stringify({ username, password, email }),
+        headers: { 'Content-Type': 'application/json' }
+      });
+
+      if (response.ok) {
+        alert("Registration Successful!");
+        form.reset();
+      } else {
+        alert("Error saving data.");
       }
-      alert('Logged in successfully (form submission placeholder)');
     });
   </script>
 </body>
 </html>
+
