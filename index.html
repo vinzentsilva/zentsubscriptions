@@ -5,20 +5,20 @@
   <title>Register</title>
   <style>
     body {
-      background: linear-gradient(to right, #6a11cb, #2575fc);
-      font-family: Arial, sans-serif;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
+      font-family: 'Segoe UI', sans-serif;
       margin: 0;
     }
     .form-box {
       background: white;
       padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.1);
-      width: 350px;
+      border-radius: 16px;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      width: 360px;
     }
     h2 {
       text-align: center;
@@ -27,9 +27,9 @@
     input {
       width: 100%;
       padding: 12px;
-      margin: 8px 0;
+      margin: 10px 0;
       border: 1px solid #ccc;
-      border-radius: 6px;
+      border-radius: 8px;
     }
     button {
       width: 100%;
@@ -37,7 +37,8 @@
       background: #007bff;
       color: white;
       border: none;
-      border-radius: 6px;
+      border-radius: 8px;
+      font-size: 16px;
       cursor: pointer;
     }
     button:hover {
@@ -58,9 +59,8 @@
   </div>
 
   <script>
-    const scriptURL = "https://script.google.com/macros/s/AKfycbx99w4oSgm8qZukNzZDBImUi_ULfniUwTmtlDfNdr79Xi1fb_Xmq40Rnl5-nB3hWlLyag/exec"; // Replace this with your actual Web App URL
-
-    document.getElementById('registerForm').addEventListener('submit', async function(e) {
+    const form = document.getElementById('registerForm');
+    form.addEventListener('submit', async function (e) {
       e.preventDefault();
 
       const username = document.getElementById('username').value.trim();
@@ -73,18 +73,19 @@
         return;
       }
 
+      const scriptURL = "https://script.google.com/macros/s/AKfycbz9D7IvlqSalWFrHjje4kMyFidySL7rWzxEwsMU5H8Wi168zGegHM8Fw42W1X_8a3-hrA/exec"; // Replace this!
+
       const response = await fetch(scriptURL, {
         method: 'POST',
         body: JSON.stringify({ username, password, email }),
         headers: { 'Content-Type': 'application/json' }
       });
 
-      const result = await response.text();
-      if (result.includes("Success")) {
-        alert("Registered successfully!");
-        e.target.reset();
+      if (response.ok) {
+        alert("Registration Successful!");
+        form.reset();
       } else {
-        alert("Error: " + result);
+        alert("Error saving data.");
       }
     });
   </script>
