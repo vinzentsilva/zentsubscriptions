@@ -1,124 +1,124 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>Registration & Login</title>
+  <meta charset="UTF-8">
+  <title>Register/Login</title>
   <style>
     body {
-      font-family: Arial;
-      background: #f4f4f4;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
     }
-    .form-container {
+    .container {
       background: white;
       padding: 20px;
       border-radius: 10px;
-      box-shadow: 0 0 10px #ccc;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
       width: 300px;
     }
+    h2 {
+      text-align: center;
+    }
     input {
-      display: block;
       width: 100%;
-      margin-bottom: 10px;
       padding: 10px;
+      margin: 6px 0;
     }
     button {
       width: 100%;
       padding: 10px;
-      background: blue;
+      background: #3498db;
       color: white;
       border: none;
-      border-radius: 5px;
+      margin-top: 10px;
+      cursor: pointer;
     }
-    #loginForm { display: none; }
+    #loginForm {
+      display: none;
+    }
+    .message {
+      color: green;
+      font-size: 14px;
+      text-align: center;
+    }
   </style>
 </head>
 <body>
+  <div class="container">
+    <!-- Registration Form -->
+    <form id="registerForm">
+      <h2>Register</h2>
+      <input type="text" id="regUsername" placeholder="Username" required>
+      <input type="email" id="regEmail" placeholder="Email" required>
+      <input type="password" id="regPassword" placeholder="Password" required>
+      <input type="password" id="regConfirmPassword" placeholder="Verify Password" required>
+      <button type="submit">Register</button>
+      <div id="registerMessage" class="message"></div>
+    </form>
 
-<div class="form-container">
-  <form id="registerForm">
-    <h2>Register</h2>
-    <input type="text" id="regUsername" placeholder="Username" required autocomplete="off">
-    <input type="email" id="regEmail" placeholder="Email" required autocomplete="off">
-    <input type="password" id="regPassword" placeholder="Password" required>
-    <input type="password" id="regConfirm" placeholder="Verify Password" required>
-    <button type="submit">Register</button>
-    <p id="registerMsg"></p>
-  </form>
+    <!-- Login Form -->
+    <form id="loginForm">
+      <h2>Login</h2>
+      <input type="text" id="loginUsername" placeholder="Username" required>
+      <input type="password" id="loginPassword" placeholder="Password" required>
+      <input type="password" id="loginConfirmPassword" placeholder="Verify Password" required>
+      <button type="submit">Login</button>
+      <div id="loginMessage" class="message"></div>
+    </form>
+  </div>
 
-  <form id="loginForm">
-    <h2>Login</h2>
-    <input type="text" id="loginUsername" placeholder="Username" required autocomplete="off">
-    <input type="password" id="loginPassword" placeholder="Password" required>
-    <input type="password" id="loginConfirm" placeholder="Verify Password" required>
-    <button type="submit">Login</button>
-    <p id="loginMsg"></p>
-  </form>
-</div>
+  <script>
+    const registerForm = document.getElementById('registerForm');
+    const loginForm = document.getElementById('loginForm');
+    const registerMessage = document.getElementById('registerMessage');
+    const loginMessage = document.getElementById('loginMessage');
 
-<script>
-  const registerForm = document.getElementById("registerForm");
-  const loginForm = document.getElementById("loginForm");
+    let savedUser = {};
 
-  registerForm.addEventListener("submit", function(e) {
-    e.preventDefault();
+    registerForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const username = document.getElementById('regUsername').value.trim();
+      const email = document.getElementById('regEmail').value.trim();
+      const password = document.getElementById('regPassword').value;
+      const confirmPassword = document.getElementById('regConfirmPassword').value;
 
-    const username = document.getElementById("regUsername").value.trim();
-    const email = document.getElementById("regEmail").value.trim();
-    const password = document.getElementById("regPassword").value;
-    const confirm = document.getElementById("regConfirm").value;
+      if (password !== confirmPassword) {
+        registerMessage.textContent = "Passwords do not match!";
+        return;
+      }
 
-    if (password !== confirm) {
-      document.getElementById("registerMsg").textContent = "Passwords do not match.";
-      return;
-    }
+      savedUser = { username, password }; // save in memory
+      registerMessage.textContent = "Registered successfully!";
+      
+      setTimeout(() => {
+        registerForm.style.display = 'none';
+        loginForm.style.display = 'block';
+      }, 1000);
+    });
 
-    fetch("https://script.google.com/macros/s/YOUR_DEPLOYED_SCRIPT_URL/exec", {
-      method: "POST",
-      body: JSON.stringify({
-        action: "register",
-        username, email, password
-      })
-    })
-    .then(res => res.text())
-    .then(response => {
-      if (response === "success") {
-        registerForm.reset();
-        registerForm.style.display = "none";
-        loginForm.style.display = "block";
+    loginForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const loginUsername = document.getElementById('loginUsername').value.trim();
+      const loginPassword = document.getElementById('loginPassword').value;
+      const loginConfirmPassword = document.getElementById('loginConfirmPassword').value;
+
+      if (loginPassword !== loginConfirmPassword) {
+        loginMessage.textContent = "Passwords do not match!";
+        return;
+      }
+
+      if (
+        loginUsername === savedUser.username &&
+        loginPassword === savedUser.password
+      ) {
+        loginMessage.textContent = "Login successful!";
       } else {
-        document.getElementById("registerMsg").textContent = response;
+        loginMessage.textContent = "Invalid credentials!";
       }
     });
-  });
-
-  loginForm.addEventListener("submit", function(e) {
-    e.preventDefault();
-
-    const username = document.getElementById("loginUsername").value.trim();
-    const password = document.getElementById("loginPassword").value;
-    const confirm = document.getElementById("loginConfirm").value;
-
-    if (password !== confirm) {
-      document.getElementById("loginMsg").textContent = "Passwords do not match.";
-      return;
-    }
-
-    fetch("https://script.google.com/macros/s/AKfycbzyo89ri05Fr_S3RTkv7yw3oCKDpj_nrCXuTo3w6PB8lTzbM3g0csQ6Vdg6RHq8LmVhAw/exec", {
-      method: "POST",
-      body: JSON.stringify({
-        action: "login",
-        username, password
-      })
-    })
-    .then(res => res.text())
-    .then(response => {
-      document.getElementById("loginMsg").textContent = response;
-    });
-  });
-</script>
-
+  </script>
 </body>
 </html>
