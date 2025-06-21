@@ -81,15 +81,16 @@
 
     #mainHeader {
       display: none;
-      background: rgba(0,0,0,0.7);
-      color: white;
-      padding: 12px 20px;
       position: fixed;
-      top: 0;
-      width: 100%;
+      top: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 8px;
       z-index: 999;
       display: flex;
-      justify-content: space-between;
+      gap: 12px;
       align-items: center;
     }
 
@@ -97,7 +98,7 @@
       background: transparent;
       color: white;
       border: none;
-      margin: 0 8px;
+      margin: 0;
       cursor: pointer;
       font-size: 16px;
     }
@@ -141,11 +142,9 @@
 
   <!-- Header Navigation -->
   <header id="mainHeader">
-    <div>
-      <button class="navBtn" onclick="navigateTo('Home')">Home</button>
-      <button class="navBtn" onclick="navigateTo('Games')">Games</button>
-      <button class="navBtn" onclick="navigateTo('Account')">Account</button>
-    </div>
+    <button class="navBtn" onclick="navigateTo('Home')">Home</button>
+    <button class="navBtn" onclick="navigateTo('Games')">Games</button>
+    <button class="navBtn" onclick="navigateTo('Account')">Account</button>
     <button class="navBtn" onclick="logout()">Logout</button>
   </header>
 
@@ -173,6 +172,10 @@
         <input type="password" id="loginConfirmPassword" placeholder="Verify Password" required />
         <button type="submit">Login</button>
         <div id="loginMessage" class="message"></div>
+        <p class="switchLink">
+          Don’t have an account?
+          <button type="button" id="showRegisterBtn">Register</button>
+        </p>
       </form>
     </div>
   </div>
@@ -213,6 +216,11 @@
       document.getElementById('showLoginBtn').addEventListener('click', function () {
         registerForm.style.display = 'none';
         loginForm.style.display = 'block';
+      });
+
+      document.getElementById('showRegisterBtn').addEventListener('click', function () {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
       });
 
       registerForm.addEventListener('submit', function (e) {
