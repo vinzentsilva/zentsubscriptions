@@ -4,25 +4,44 @@
   <meta charset="UTF-8" />
   <title>Register/Login</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      height: 100%;
       font-family: Arial, sans-serif;
-      background: #eee;
+    }
+
+    /* Fullscreen background video */
+    #bgVideo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+    }
+
+    .wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      margin: 0;
+      height: 100%;
+      padding: 20px;
     }
 
     .container {
-      background: rgba(0, 0, 0, 0.6); /* slightly darker for contrast */
+      background: rgba(0, 0, 0, 0.6);
       padding: 24px;
       border-radius: 12px;
-      width: 100%;
       max-width: 360px;
-      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+      width: 100%;
       color: white;
-      box-sizing: border-box;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     }
 
     h2 {
@@ -36,7 +55,6 @@
       margin: 10px 0;
       border: none;
       border-radius: 6px;
-      box-sizing: border-box;
     }
 
     input {
@@ -67,36 +85,45 @@
   </style>
 </head>
 <body>
-  <div class="container">
-    <form id="registerForm">
-      <h2>Register</h2>
-      <input type="text" id="regUsername" placeholder="Username" required />
-      <input type="email" id="regEmail" placeholder="Email" required />
-      <input type="password" id="regPassword" placeholder="Password" required />
-      <input type="password" id="regConfirmPassword" placeholder="Verify Password" required />
-      <button type="submit">Register</button>
-      <div id="registerMessage" class="message"></div>
-    </form>
 
-    <form id="loginForm">
-      <h2>Login</h2>
-      <input type="text" id="loginUsername" placeholder="Username" required />
-      <input type="password" id="loginPassword" placeholder="Password" required />
-      <input type="password" id="loginConfirmPassword" placeholder="Verify Password" required />
-      <button type="submit">Login</button>
-      <div id="loginMessage" class="message"></div>
-    </form>
+  <!-- Background video -->
+  <video id="bgVideo" autoplay muted loop>
+    <source src="background.mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <div class="wrapper">
+    <div class="container">
+      <form id="registerForm">
+        <h2>Register</h2>
+        <input type="text" id="regUsername" placeholder="Username" required />
+        <input type="email" id="regEmail" placeholder="Email" required />
+        <input type="password" id="regPassword" placeholder="Password" required />
+        <input type="password" id="regConfirmPassword" placeholder="Verify Password" required />
+        <button type="submit">Register</button>
+        <div id="registerMessage" class="message"></div>
+      </form>
+
+      <form id="loginForm">
+        <h2>Login</h2>
+        <input type="text" id="loginUsername" placeholder="Username" required />
+        <input type="password" id="loginPassword" placeholder="Password" required />
+        <input type="password" id="loginConfirmPassword" placeholder="Verify Password" required />
+        <button type="submit">Login</button>
+        <div id="loginMessage" class="message"></div>
+      </form>
+    </div>
   </div>
 
   <script>
-    window.onload = function() {
+    window.onload = function () {
       const registerForm = document.getElementById('registerForm');
       const loginForm = document.getElementById('loginForm');
       const registerMessage = document.getElementById('registerMessage');
       const loginMessage = document.getElementById('loginMessage');
       let savedUser = {};
 
-      registerForm.addEventListener('submit', function(e) {
+      registerForm.addEventListener('submit', function (e) {
         e.preventDefault();
         const username = document.getElementById('regUsername').value.trim();
         const email = document.getElementById('regEmail').value.trim();
@@ -109,14 +136,16 @@
         }
 
         savedUser = { username, password };
-        registerMessage.textContent = "Registered successfully!";
+        registerMessage.textContent = "Registered successfully! Redirecting to login...";
+
         setTimeout(() => {
           registerForm.style.display = 'none';
           loginForm.style.display = 'block';
-        }, 1000);
+          registerMessage.textContent = "";
+        }, 5000); // wait 5 seconds
       });
 
-      loginForm.addEventListener('submit', function(e) {
+      loginForm.addEventListener('submit', function (e) {
         e.preventDefault();
         const loginUsername = document.getElementById('loginUsername').value.trim();
         const loginPassword = document.getElementById('loginPassword').value;
