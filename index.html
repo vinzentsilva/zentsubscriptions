@@ -4,22 +4,12 @@
   <meta charset="UTF-8" />
   <title>Register/Login</title>
   <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; font-family: Arial, sans-serif; }
 
-    html, body {
-      height: 100%;
-      font-family: Arial, sans-serif;
-    }
-
-    /* Fullscreen background video */
     #bgVideo {
       position: fixed;
-      top: 0;
-      left: 0;
+      top: 0; left: 0;
       width: 100vw;
       height: 100vh;
       object-fit: cover;
@@ -44,11 +34,7 @@
       box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
     }
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
+    h2 { text-align: center; margin-bottom: 20px; }
     input, button {
       width: 100%;
       padding: 12px;
@@ -57,20 +43,9 @@
       border-radius: 6px;
     }
 
-    input {
-      background-color: #fff;
-      color: #000;
-    }
-
-    button {
-      background: #3498db;
-      color: white;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background: #2980b9;
-    }
+    input { background-color: #fff; color: #000; }
+    button { background: #3498db; color: white; cursor: pointer; }
+    button:hover { background: #2980b9; }
 
     .message {
       color: #2ecc71;
@@ -79,9 +54,7 @@
       margin-top: 10px;
     }
 
-    #loginForm {
-      display: none;
-    }
+    #loginForm { display: none; }
   </style>
 </head>
 <body>
@@ -142,7 +115,7 @@
           registerForm.style.display = 'none';
           loginForm.style.display = 'block';
           registerMessage.textContent = "";
-        }, 5000); // wait 5 seconds
+        }, 5000);
       });
 
       loginForm.addEventListener('submit', function (e) {
@@ -156,6 +129,16 @@
           return;
         }
 
+        // Hardcoded redirect for timdeluna
+        if (loginUsername === "timdeluna" && loginPassword === "123") {
+          loginMessage.textContent = "Login successful! Redirecting...";
+          setTimeout(() => {
+            window.location.href = "account.html";
+          }, 2000);
+          return;
+        }
+
+        // Login with registered user
         if (
           loginUsername === savedUser.username &&
           loginPassword === savedUser.password
