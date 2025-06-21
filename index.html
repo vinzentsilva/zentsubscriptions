@@ -2,11 +2,72 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Register/Login</title>
+  <title>ZENT Games - Login/Register</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html, body { height: 100%; font-family: Arial, sans-serif; }
+    html, body {
+      height: 100%;
+      font-family: 'Arial', sans-serif;
+      background: #0b0f11;
+    }
 
+    /* HEADER */
+    #mainHeader {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 20px 60px;
+      background-color: #0b0f11;
+      border-bottom: 1px solid #1a1f22;
+      z-index: 10000;
+    }
+
+    .header-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      color: #00ffcc;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 30px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      color: white;
+      text-decoration: none;
+      font-size: 15px;
+      padding: 6px 12px;
+      transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+      color: #00ffcc;
+    }
+
+    .contact-btn {
+      border: 1px solid #ffffff;
+      border-radius: 6px;
+      padding: 6px 16px;
+      background: transparent;
+      transition: all 0.3s ease;
+    }
+
+    .contact-btn:hover {
+      background: #00ffcc;
+      color: #0b0f11;
+      border-color: #00ffcc;
+    }
+
+    /* BACKGROUND VIDEO */
     #bgVideo {
       position: fixed;
       top: 0; left: 0;
@@ -16,12 +77,36 @@
       z-index: -1;
     }
 
+    /* MUTE BUTTON */
+    #muteBtn {
+      position: fixed;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      font-size: 18px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
+      cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #muteBtn:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
+
+    /* FORM WRAPPER */
     .wrapper {
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100%;
-      padding: 20px;
+      padding-top: 120px;
     }
 
     .container {
@@ -56,57 +141,6 @@
 
     #loginForm { display: none; }
 
-    #muteBtn {
-      position: fixed;
-      top: 16px;
-      right: 16px;
-      width: 36px;
-      height: 36px;
-      font-size: 18px;
-      line-height: 1;
-      border: none;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.5);
-      color: white;
-      cursor: pointer;
-      z-index: 1000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #muteBtn:hover {
-      background: rgba(0, 0, 0, 0.8);
-    }
-
-    #mainHeader {
-      display: none;
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      background: rgba(0, 0, 0, 0.7);
-      color: white;
-      padding: 10px 16px;
-      border-radius: 8px;
-      z-index: 999;
-      display: flex;
-      gap: 12px;
-      align-items: center;
-    }
-
-    .navBtn {
-      background: transparent;
-      color: white;
-      border: none;
-      margin: 0;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .navBtn:hover {
-      text-decoration: underline;
-    }
-
     .switchLink {
       text-align: center;
       font-size: 14px;
@@ -128,27 +162,30 @@
   <!-- Background video -->
   <video id="bgVideo" autoplay muted loop playsinline>
     <source src="background.mp4" type="video/mp4" />
-    Your browser does not support the video tag.
   </video>
 
   <!-- Background music -->
   <audio id="bgMusic" autoplay loop>
     <source src="Etsu - Divergence.mp3" type="audio/mpeg" />
-    Your browser does not support the audio element.
   </audio>
 
-  <!-- Mute/Unmute Icon Button -->
+  <!-- Mute/Unmute Button -->
   <button id="muteBtn" title="Toggle Sound">🔊</button>
 
   <!-- Header Navigation -->
-  <header id="mainHeader">
-    <button class="navBtn" onclick="navigateTo('Home')">Home</button>
-    <button class="navBtn" onclick="navigateTo('Games')">Games</button>
-    <button class="navBtn" onclick="navigateTo('Account')">Account</button>
-    <button class="navBtn" onclick="logout()">Logout</button>
+  <header id="mainHeader" style="display: none;">
+    <div class="header-container">
+      <div class="logo">🎮 ZENT Games</div>
+      <nav class="nav-links">
+        <a href="#" onclick="navigateTo('Home')">Home</a>
+        <a href="#" onclick="navigateTo('Games')">Games</a>
+        <a href="#" onclick="navigateTo('Account')">Account</a>
+        <a href="#" class="contact-btn" onclick="logout()">Logout</a>
+      </nav>
+    </div>
   </header>
 
-  <!-- Forms -->
+  <!-- Login / Register Forms -->
   <div class="wrapper">
     <div class="container">
       <form id="registerForm">
@@ -180,9 +217,11 @@
     </div>
   </div>
 
+  <!-- Scripts -->
   <script>
     const music = document.getElementById('bgMusic');
     const muteBtn = document.getElementById('muteBtn');
+    const header = document.getElementById('mainHeader');
 
     document.addEventListener('click', () => {
       music.volume = 0.2;
@@ -199,7 +238,7 @@
     }
 
     function logout() {
-      document.getElementById('mainHeader').style.display = 'none';
+      header.style.display = 'none';
       document.getElementById('loginForm').style.display = 'block';
       document.getElementById('registerForm').style.display = 'none';
       document.getElementById('loginMessage').textContent = '';
@@ -210,7 +249,6 @@
       const loginForm = document.getElementById('loginForm');
       const registerMessage = document.getElementById('registerMessage');
       const loginMessage = document.getElementById('loginMessage');
-      const header = document.getElementById('mainHeader');
       let savedUser = {};
 
       document.getElementById('showLoginBtn').addEventListener('click', function () {
@@ -263,7 +301,7 @@
           loginMessage.textContent = "Login successful! Loading...";
           setTimeout(() => {
             loginForm.style.display = 'none';
-            header.style.display = 'flex';
+            header.style.display = 'block';
             loginMessage.textContent = "";
           }, 1500);
         } else {
