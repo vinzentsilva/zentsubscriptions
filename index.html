@@ -56,17 +56,24 @@
 
     #loginForm { display: none; }
 
+    /* Icon-only Mute Button */
     #muteBtn {
       position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 10;
-      padding: 10px 16px;
-      background: rgba(0, 0, 0, 0.6);
-      color: white;
+      top: 16px;
+      right: 16px;
+      width: 36px;
+      height: 36px;
+      font-size: 18px;
+      line-height: 1;
       border: none;
-      border-radius: 6px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.5);
+      color: white;
       cursor: pointer;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     #muteBtn:hover {
@@ -84,28 +91,27 @@
 
   <!-- Background music -->
   <audio id="bgMusic" autoplay loop>
-    <source src="music.mp3" type="audio/mpeg" />
+    <source src="Etsu - Divergence.mp3" type="audio/mpeg" />
     Your browser does not support the audio element.
   </audio>
 
-  <!-- Mute/Unmute Button -->
-  <button id="muteBtn">🔊 Sound On</button>
+  <!-- Mute/Unmute Icon Button -->
+  <button id="muteBtn" title="Toggle Sound">🔊</button>
 
-  <!-- Music Script -->
   <script>
     const music = document.getElementById('bgMusic');
     const muteBtn = document.getElementById('muteBtn');
 
-    // On first interaction: set volume to 20% and play
+    // Play music and set volume on first click
     document.addEventListener('click', () => {
-      music.volume = 0.2; // 20% volume
+      music.volume = 0.2;
       if (music.paused) music.play();
     }, { once: true });
 
-    // Toggle mute/unmute
+    // Toggle mute/unmute icon
     muteBtn.addEventListener('click', () => {
       music.muted = !music.muted;
-      muteBtn.textContent = music.muted ? '🔇 Sound Off' : '🔊 Sound On';
+      muteBtn.textContent = music.muted ? '🔇' : '🔊';
     });
   </script>
 
