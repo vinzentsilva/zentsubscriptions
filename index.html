@@ -56,7 +56,6 @@
 
     #loginForm { display: none; }
 
-    /* Icon-only Mute Button */
     #muteBtn {
       position: fixed;
       top: 16px;
@@ -79,6 +78,34 @@
     #muteBtn:hover {
       background: rgba(0, 0, 0, 0.8);
     }
+
+    /* Header styles */
+    #mainHeader {
+      display: none;
+      background: rgba(0,0,0,0.7);
+      color: white;
+      padding: 12px 20px;
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navBtn {
+      background: transparent;
+      color: white;
+      border: none;
+      margin: 0 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .navBtn:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
@@ -98,23 +125,17 @@
   <!-- Mute/Unmute Icon Button -->
   <button id="muteBtn" title="Toggle Sound">🔊</button>
 
-  <script>
-    const music = document.getElementById('bgMusic');
-    const muteBtn = document.getElementById('muteBtn');
+  <!-- Header Navigation -->
+  <header id="mainHeader">
+    <div>
+      <button class="navBtn" onclick="navigateTo('Home')">Home</button>
+      <button class="navBtn" onclick="navigateTo('Games')">Games</button>
+      <button class="navBtn" onclick="navigateTo('Account')">Account</button>
+    </div>
+    <button class="navBtn" onclick="logout()">Logout</button>
+  </header>
 
-    // Play music and set volume on first click
-    document.addEventListener('click', () => {
-      music.volume = 0.2;
-      if (music.paused) music.play();
-    }, { once: true });
-
-    // Toggle mute/unmute icon
-    muteBtn.addEventListener('click', () => {
-      music.muted = !music.muted;
-      muteBtn.textContent = music.muted ? '🔇' : '🔊';
-    });
-  </script>
-
+  <!-- Forms -->
   <div class="wrapper">
     <div class="container">
       <form id="registerForm">
@@ -139,11 +160,36 @@
   </div>
 
   <script>
+    const music = document.getElementById('bgMusic');
+    const muteBtn = document.getElementById('muteBtn');
+
+    document.addEventListener('click', () => {
+      music.volume = 0.2;
+      if (music.paused) music.play();
+    }, { once: true });
+
+    muteBtn.addEventListener('click', () => {
+      music.muted = !music.muted;
+      muteBtn.textContent = music.muted ? '🔇' : '🔊';
+    });
+
+    function navigateTo(section) {
+      alert(`Navigating to ${section}`);
+    }
+
+    function logout() {
+      document.getElementById('mainHeader').style.display = 'none';
+      document.getElementById('loginForm').style.display = 'block';
+      document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('loginMessage').textContent = '';
+    }
+
     window.onload = function () {
       const registerForm = document.getElementById('registerForm');
       const loginForm = document.getElementById('loginForm');
       const registerMessage = document.getElementById('registerMessage');
       const loginMessage = document.getElementById('loginMessage');
+      const header = document.getElementById('mainHeader');
       let savedUser = {};
 
       registerForm.addEventListener('submit', function (e) {
@@ -179,19 +225,16 @@
           return;
         }
 
-        if (loginUsername === "timdeluna" && loginPassword === "123") {
-          loginMessage.textContent = "Login successful! Redirecting...";
-          setTimeout(() => {
-            window.location.href = "account.html";
-          }, 2000);
-          return;
-        }
+        const isValidHardcoded = (loginUsername === "timdeluna" && loginPassword === "123");
+        const isValidSaved = (loginUsername === savedUser.username && loginPassword === savedUser.password);
 
-        if (
-          loginUsername === savedUser.username &&
-          loginPassword === savedUser.password
-        ) {
-          loginMessage.textContent = "Login successful!";
+        if (isValidHardcoded || isValidSaved) {
+          loginMessage.textContent = "Login successful! Loading...";
+          setTimeout(() => {
+            loginForm.style.display = 'none';
+            header.style.display = 'flex';
+            loginMessage.textContent = "";
+          }, 1500);
         } else {
           loginMessage.textContent = "Invalid credentials!";
         }
