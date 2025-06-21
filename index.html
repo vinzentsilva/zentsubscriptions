@@ -55,6 +55,23 @@
     }
 
     #loginForm { display: none; }
+
+    #muteBtn {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 10;
+      padding: 10px 16px;
+      background: rgba(0, 0, 0, 0.6);
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    #muteBtn:hover {
+      background: rgba(0, 0, 0, 0.8);
+    }
   </style>
 </head>
 <body>
@@ -71,12 +88,25 @@
     Your browser does not support the audio element.
   </audio>
 
-  <!-- Force play music on first click (bypass autoplay restrictions) -->
+  <!-- Mute/Unmute Button -->
+  <button id="muteBtn">🔊 Sound On</button>
+
+  <!-- Music Script -->
   <script>
+    const music = document.getElementById('bgMusic');
+    const muteBtn = document.getElementById('muteBtn');
+
+    // Play music on first user interaction
     document.addEventListener('click', () => {
-      const music = document.getElementById('bgMusic');
+      music.volume = 0.5;
       if (music.paused) music.play();
     }, { once: true });
+
+    // Toggle mute/unmute
+    muteBtn.addEventListener('click', () => {
+      music.muted = !music.muted;
+      muteBtn.textContent = music.muted ? '🔇 Sound Off' : '🔊 Sound On';
+    });
   </script>
 
   <div class="wrapper">
