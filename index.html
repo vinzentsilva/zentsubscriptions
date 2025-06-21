@@ -96,9 +96,9 @@
     const music = document.getElementById('bgMusic');
     const muteBtn = document.getElementById('muteBtn');
 
-    // Play music on first user interaction
+    // On first interaction: set volume to 20% and play
     document.addEventListener('click', () => {
-      music.volume = 0.5;
+      music.volume = 0.2; // 20% volume
       if (music.paused) music.play();
     }, { once: true });
 
