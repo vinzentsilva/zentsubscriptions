@@ -79,7 +79,6 @@
       background: rgba(0, 0, 0, 0.8);
     }
 
-    /* Header styles */
     #mainHeader {
       display: none;
       background: rgba(0,0,0,0.7);
@@ -105,6 +104,21 @@
 
     .navBtn:hover {
       text-decoration: underline;
+    }
+
+    .switchLink {
+      text-align: center;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+
+    .switchLink button {
+      background: none;
+      border: none;
+      color: #3498db;
+      cursor: pointer;
+      text-decoration: underline;
+      padding: 0;
     }
   </style>
 </head>
@@ -146,6 +160,10 @@
         <input type="password" id="regConfirmPassword" placeholder="Verify Password" required />
         <button type="submit">Register</button>
         <div id="registerMessage" class="message"></div>
+        <p class="switchLink">
+          Already have an account?
+          <button type="button" id="showLoginBtn">Login</button>
+        </p>
       </form>
 
       <form id="loginForm">
@@ -191,6 +209,11 @@
       const loginMessage = document.getElementById('loginMessage');
       const header = document.getElementById('mainHeader');
       let savedUser = {};
+
+      document.getElementById('showLoginBtn').addEventListener('click', function () {
+        registerForm.style.display = 'none';
+        loginForm.style.display = 'block';
+      });
 
       registerForm.addEventListener('submit', function (e) {
         e.preventDefault();
